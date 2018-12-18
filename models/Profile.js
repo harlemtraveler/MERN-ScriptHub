@@ -8,7 +8,7 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  handle: {
+  username: {
     type: String,
     required: true,
     max: 40
@@ -22,7 +22,7 @@ const ProfileSchema = new Schema({
   location: {
     type: String
   },
-  status: {
+  title: {
     type: String,
     required: true
   },

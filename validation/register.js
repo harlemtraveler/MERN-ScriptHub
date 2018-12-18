@@ -9,6 +9,7 @@ module.exports = function validateRegisterInput(data) {
   data.password = !isEmpty(data.password) ? data.password : '';
   data.password2 = !isEmpty(data.password2) ? data.password2 : ''; // confirms the password
 
+  // NOTE: isLength is used to validate name length
   if(!Validator.isLength(data.name, { min: 2, max: 30 })) {
     errors.name = "Name must be between 2 and 30 characters";
   }
@@ -21,7 +22,8 @@ module.exports = function validateRegisterInput(data) {
     errors.email = '[!] Email field is required';
   }
 
-  if (!Validator.isEmpty(data.email)) {
+  // NOTE: isEmail is used to validate email format
+  if (!Validator.isEmail(data.email)) {
     errors.email = '[!] Email is invalid';
   }
 
@@ -29,7 +31,8 @@ module.exports = function validateRegisterInput(data) {
     errors.password = '[!] Password field is required';
   }
 
-  if (!Validator.isEmpty(data.password, { min: 6, max: 30 })) {
+  // NOTE: isLength is used to validate password length
+  if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
     errors.password = '[!] Password must be at least 6 characters';
   }
 
@@ -37,7 +40,8 @@ module.exports = function validateRegisterInput(data) {
     errors.password2 = '[!] Confirm Password field is required';
   }
 
-  if (!Validator.isEmpty(data.password, data.password2)) {
+  // NOTE: equals is used to validate password & password2 match
+  if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = '[!] Passwords must match';
   }
 
