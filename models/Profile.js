@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-Float = require('mongoose-float').loadType(mongoose);
+const Float = require('mongoose-float').loadType(mongoose, 2);
 const Schema = mongoose.Schema;
 
 // Create Schema
@@ -48,24 +48,24 @@ const ProfileSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // sellerrating: {
-  //   type: Float
-  // },
-  // buyerrating: {
-  //   type: Float
-  // },
-  // positiverating: {
-  //   type: Float
-  // },
-  // negativerating: {
-  //   type: Float
-  // },
-  // responsetime: {
-  //   type: Float
-  // },
-  // lastseen: {
-  //   type: Float
-  // },
+  sellerrating: {
+    type: Float
+  },
+  buyerrating: {
+    type: Float
+  },
+  positiverating: {
+    type: Float
+  },
+  negativerating: {
+    type: Float
+  },
+  responsetime: {
+    type: Float
+  },
+  lastseen: {
+    type: Float
+  },
   experience: [
     // An array of objects
     {
