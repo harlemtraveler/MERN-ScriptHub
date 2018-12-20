@@ -44,6 +44,7 @@ const ProfileSchema = new Schema({
   userlevel: {
     type: Number
   },
+  // NOTE: "joindate" may be redundant - date prop exists
   joindate: {
     type: Date,
     default: Date.now
@@ -63,8 +64,9 @@ const ProfileSchema = new Schema({
   responsetime: {
     type: Float
   },
+  // TODO: Make date relative to last login
   lastseen: {
-    type: Float
+    type: Date
   },
   experience: [
     // An array of objects

@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const axios = require('axios');
+
+// Load Validaiton Profile | Exeprience | Education
+const validateProfileInput = require('../../validaiton/profile');
+const validateExeprienceInput = require('../../validaiton/experience');
+const validateEducationInput = require('../../validaiton/education');
 
 // Load Model - Profile | User
 const Profile = require('../../models/Profile');
@@ -20,6 +26,8 @@ router.get('/test', (req, res) => res.json({
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   const errors = {};
   Profile.findOne({ user: req.user.id })
+    // "populate" fetches fields from another Model
+    .populate('user', ['name', 'avatar'])
     .then(profile => {
       if(!profile) {
         errors.noprofile = '[!] There is no profile for this user';
@@ -37,6 +45,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   // Get Fields
   const { errors, isValid } = validateProfileInput(req.body);
 
+  // Check validation
   if(!isValid) {
     return res.status(400).json(errors);
   }
