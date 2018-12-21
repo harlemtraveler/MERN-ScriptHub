@@ -6,7 +6,7 @@ const axios = require('axios');
 
 // Load Validaiton Profile | Exeprience | Education
 const validateProfileInput = require('../../validaiton/profile');
-const validateExeprienceInput = require('../../validaiton/experience');
+const validateExperienceInput = require('../../validaiton/experience');
 const validateEducationInput = require('../../validaiton/education');
 
 // Load Model - Profile | User
@@ -145,6 +145,66 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
         })
       }
     })
-})
+});
+
+// @routes POST api/profile/experience
+// @desc   Add experience to profile
+// @access Private
+router.post('/experience', passport.authenticate('jwt', {  session: false}), (req, res) => {
+  const { errors, isValid } = validateExperienceInput(req.body);
+
+  // Check Validation
+  if(!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      }
+
+      profile.experience.unshift(newExp);
+
+      profile.save().then(profile => res.json(profile));
+    })
+});
+
+// @routes POST api/profile/education
+// @desc   Add education to profile
+// @access Private
+oruter.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
+  const { errors, isValid } = validateEducationInput(req.body);
+
+  // Check Validation
+  if(!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldofstudy: req.body.fieldofstudy,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      }
+
+      // Add to education array
+      profile.education.unshift(newEdu);
+
+      // Returns the current authenticated user's profile new "education" object
+      profile.save().then(profile => res.json(profile));
+    })
+});
 
 module.exports = router;
