@@ -5,9 +5,9 @@ const passport = require('passport');
 const axios = require('axios');
 
 // Load Validaiton Profile | Exeprience | Education
-const validateProfileInput = require('../../validaiton/profile');
-const validateExperienceInput = require('../../validaiton/experience');
-const validateEducationInput = require('../../validaiton/education');
+const validateProfileInput = require('../../validation/profile');
+const validateExperienceInput = require('../../validation/experience');
+const validateEducationInput = require('../../validation/education');
 
 // Load Model - Profile | User
 const Profile = require('../../models/Profile');
@@ -91,13 +91,15 @@ router.get('/user/:user_id', (req, res) => {
 // @desc   Create OR Edit user profile
 // @access Private
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  // Get Fields
+
   const { errors, isValid } = validateProfileInput(req.body);
 
   // Check validation
   if(!isValid) {
     return res.status(400).json(errors);
   }
+
+  // Get Fields
   const profileFields = {};
   profileFields.user = req.user.id;
   // Basic profile information
@@ -179,7 +181,7 @@ router.post('/experience', passport.authenticate('jwt', {  session: false}), (re
 // @routes POST api/profile/education
 // @desc   Add education to profile
 // @access Private
-oruter.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { errors, isValid } = validateEducationInput(req.body);
 
   // Check Validation

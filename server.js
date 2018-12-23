@@ -5,7 +5,7 @@ const passport = require('passport');
 
 // Models
 const users = require('./routes/api/users');
-const profile = require('./routes/api/profiles');
+const profiles = require('./routes/api/profiles');
 const posts = require('./routes/api/posts');
 const jobs = require('./routes/api/jobs');
 const services = require('./routes/api/services');
@@ -38,6 +38,8 @@ require('./config/passport')(passport);
 
 // Use routes
 app.use('/api/users', users);
+app.use('/api/profiles', profiles);
+app.use('/api/posts', posts);
 
 const PORT = process.env.PORT || 5000;
 

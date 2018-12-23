@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 // Load Validation
-const validatePostInput = require('../../validaiton/post');
+const validatePostInput = require('../../validation/post');
 
 // Load Models - Post | Profile
-const Post = require('.././models/Post');
-const Profile = require('.././models/Profile');
+const Post = require('../../models/Post');
+const Profile = require('../../models/Profile');
 
 // @routes GET api/posts/test
 // @desc   Tests posts route
@@ -44,14 +44,14 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
   // Check Validation
   if(!isValid) {
-    retrun res.status(400).json(errors);
+    return res.status(400).json(errors);
   }
 
   const newPost = new Post({
     text: req.body.text,
     name: req.body.name,
     avatar: req.body.avatar,
-    user: req.body.id
+    user: req.user.id
   });
 
   newPost.save().then(post => res.json(post));
@@ -74,7 +74,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, re
           }
 
           // Delete
-          post.remove().then(() => res.json({ sucess: true }));
+          post.remove().then(() => res.json({ success: true }));
         })
         .catch(err => res.status(404).json({ nopostfound: '[!] No post found' }));
     });
